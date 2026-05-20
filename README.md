@@ -27,7 +27,52 @@ Before an end user installs anything, `software-triage` runs a fast, automated f
 | Database Client | DBeaver, Navicat, MySQL Workbench, pgAdmin, TablePlus |
 | Cloud Collaboration | Dropbox, OneDrive, Notion, Confluence, Slack |
 | VPN / Tunneling | NordVPN, ngrok, WireGuard, Cisco AnyConnect, frp |
+| Packet Capture | Wireshark, Burp Suite, Metasploit, nmap |# software-triage
+
+First-level endpoint file triage — hashes binaries, classifies app type (RAT, VPN, DB, screen sharing), queries VirusTotal, MalwareBazaar, URLhaus, ThreatFox & CIRCL, and outputs a scored risk PDF. Pure Python, venv-isolated.
+
+---
+
+## What It Does
+
+Before an end user installs anything, `software-triage` runs a fast, automated first-pass analysis:
+
+- **Hashes the file** — MD5, SHA1, SHA256, and PE imphash
+- **Detects file type** — magic byte verification catches extension spoofing
+- **Classifies the application** — flags Remote Access Tools, VPN/tunneling clients, database tools, screen sharing apps, packet capture utilities, and credential managers before anything runs
+- **Extracts IOCs** — pulls embedded IPs, URLs, and domains from the binary
+- **Queries 6 open-source threat intel APIs** — no proprietary infrastructure required
+- **Scores risk 0–100** — weighted aggregate across all findings
+- **Generates a PDF report** — dark-themed, analyst-ready, suitable for ticketing or escalation
+
+---
+
+## Application Categories
+
+| Category | Examples |
+|---|---|
+| Remote Access Tool | TeamViewer, AnyDesk, RustDesk, ConnectWise, Dameware |
+| Session Sharing | Webex, Zoom, Microsoft Teams, GoToMeeting, Loom |
+| Database Client | DBeaver, Navicat, MySQL Workbench, pgAdmin, TablePlus |
+| Cloud Collaboration | Dropbox, OneDrive, Notion, Confluence, Slack |
+| VPN / Tunneling | NordVPN, ngrok, WireGuard, Cisco AnyConnect, frp |
 | Packet Capture | Wireshark, Burp Suite, Metasploit, nmap |
+| Credential Tool | KeePass, Bitwarden, Hashcat, Mimikatz |
+| Developer Tool | VS Code, Docker Desktop, Postman, Git |
+| Browser | Chrome, Firefox, Edge, Brave, Tor Browser |
+
+---
+
+## Threat Intel APIs
+
+| Source | Requires Key | Checks |
+|---|---|---|
+| [CIRCL hashlookup](https://hashlookup.circl.lu) | No | Known-good hash — instant clean signal |
+| [MalwareBazaar](https://bazaar.abuse.ch) | No | Known malware hash, family, tags |
+| [URLhaus](https://urlhaus.abuse.ch) | No | Malicious URLs extracted from binary |
+| [ThreatFox](https://threatfox.abuse.ch) | No | Hash and IP IOC database |
+| [VirusTotal](https://www.virustotal.com) | Yes (free) | 70+ AV engines |
+
 | Credential Tool | KeePass, Bitwarden, Hashcat, Mimikatz |
 | Developer Tool | VS Code, Docker Desktop, Postman, Git |
 | Browser | Chrome, Firefox, Edge, Brave, Tor Browser |
@@ -157,4 +202,5 @@ software-triage/
 
 ## License
 
-MIT
+GPL-3.0 — see [LICENSE](LICENSE) for details.  
+Free to use, modify, and distribute. Derivative works must remain open source under the same license.
