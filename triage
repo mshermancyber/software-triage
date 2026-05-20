@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# triage — wrapper to run file_triage.py inside the venv
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+exec "$SCRIPT_DIR/.venv/bin/python" "$SCRIPT_DIR/file_triage.py" "$@"
